@@ -1,4 +1,5 @@
-﻿using System.Diagnostics;
+﻿using System;
+using System.Diagnostics;
 
 namespace sudo
 {
@@ -7,19 +8,17 @@ namespace sudo
         static void Main(string[] args)
         {
             var cmd = string.Join(" ", args);
-
-            using (var process = new Process())
+            var startInfo = new ProcessStartInfo
             {
-                var startInfo = new ProcessStartInfo
-                {
-                    FileName = "cmd.exe",
-                    Arguments = "/C " + cmd,
-                    UseShellExecute = true,
-                    CreateNoWindow = true,
-                    Verb = "runas",
-                };
-                process.StartInfo = startInfo;
-                process.Start();
+                UseShellExecute = false,
+                FileName = "cmd.exe",
+                Arguments = "/C " + cmd,
+                Verb = "runas",
+            };
+            using (var process = Process.Start(startInfo))
+            {
+                process.WaitForExit();
+                Environment.Exit(process.ExitCode);
             }
         }
     }
