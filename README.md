@@ -8,5 +8,5 @@ A sudo for Windows cmd
 3. Invoke your command like this:
 
 ```batch
-net session >nul 2>&1 && echo OK & pause
+sudo "net session >nul 2>&1 && echo OK & pause"
 ```
